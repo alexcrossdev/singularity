@@ -34,6 +34,13 @@
               clang-tools
               pkg-config
 
+              (python3.withPackages (ps: with ps; [
+                  nbtlib
+              ]))
+              temurin-bin-27
+              zlib
+              openssl
+
               git
             ];
 
@@ -42,6 +49,7 @@
               echo ""
               echo "Development toolchain:"
               echo "    Clang: $(clang --version | head -n 1)"
+              echo "    Python: $(python --version | head -n 1)"
             '';
           };
         });
