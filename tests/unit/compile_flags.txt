@@ -1,0 +1,9 @@
+-std=c23
+
+-I../../common/include
+-I../framework/include
+
+-Wall
+-Wextra
+-Werror
+-Wpedantic
