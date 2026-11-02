@@ -4,14 +4,20 @@ from pathlib import Path
 
 from .header import (
     guard_start,
-    guard_end
+    guard_end,
+    enum_start,
+    enum_end,
+    struct_start,
+    struct_end
 )
 
 ROOT = Path(__file__).resolve().parents[3]
 
-def generate_packet_ids(input_path, output_path):
+def generate_packet_ids(input_path, output_path, version):
     input_path = Path(input_path)
     output_path = Path(output_path)
+
+    version_fmt = version.replace(".", "_")
 
     if not input_path.exists():
         raise FileNotFoundError(f"Packet report not found: {input_path}")
@@ -28,7 +34,7 @@ def generate_packet_ids(input_path, output_path):
 
     with open(output_path, "w") as output:
         output.write("/* This file is generated, do not manually update */\n")
-        guard_start(output, "PACKET_IDS")
+        guard_start(output, f"{version_fmt}_PACKET_IDS")
 
         for state, data in raw.items():
             output.write(f"/* {state.upper()} */\n")
@@ -39,8 +45,9 @@ def generate_packet_ids(input_path, output_path):
                 if not packets:
                     continue
 
-                output.write(f"\n/* {prefix} */\n")
 
+                output.write(f"\n/* {prefix} */\n")
+                enum_start(output)
                 for name, packet in packets.items():
                     action_name = (
                         name.split(":", 1)[-1]
@@ -51,12 +58,14 @@ def generate_packet_ids(input_path, output_path):
                     packet_id = packet["protocol_id"]
 
                     output.write(
-                        f"#define PKT_{state.upper()}_{prefix}_{action_name} "
-                        f"0x{packet_id:02X}\n"
+                        f"\tPKT_{version_fmt}_{state.upper()}_{prefix}_{action_name} = "
+                        f"0x{packet_id:02X},\n"
                     )
 
-                output.write("\n")
+                enum_end(
+                    output,
+                    None)
 
         guard_end(output)
 
-    print(f"Generated packet IDs: {output_path.relative_to(ROOT)}")
+    print(f"Generated packet_ids.h: {output_path.relative_to(ROOT)}")

@@ -1,5 +1,3 @@
-.DEFAULT_GOAL := all
-
 CC ?= clang
 AR ?= ar
 ARFLAGS := rcs
@@ -8,7 +6,7 @@ BUILD ?= debug
 TARGET := libsgcommon.a
 
 ROOT_DIR := ..
-BUILD_DIR := $(ROOT_DIR)/build
+BUILD_DIR := $(ROOT_DIR)/build/$(BUILD)
 OBJ_DIR := $(BUILD_DIR)/obj/common
 LIB_DIR := $(BUILD_DIR)/lib
 

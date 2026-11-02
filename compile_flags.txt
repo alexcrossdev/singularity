@@ -1,8 +1,19 @@
 -std=c23
 
 -Icommon/include
+-Idata/generated/26.3
+-Iserver/src
+-Iserver/src/generated/26.3
+-Iserver/vendor
 
 -Wall
 -Wextra
 -Werror
 -Wpedantic
+-Wshadow
+-Wvla
+-Wstrict-prototypes
+-Wmissing-prototypes
+-Wno-unused-parameter
+
+-pthread

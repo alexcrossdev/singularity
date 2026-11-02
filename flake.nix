@@ -32,6 +32,7 @@
               valgrind
 
               clang-tools
+              bear
               pkg-config
 
               (python3.withPackages (ps: with ps; [
